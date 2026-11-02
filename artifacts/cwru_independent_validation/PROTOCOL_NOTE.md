@@ -1,7 +1,7 @@
 # CWRU WK-CDAN strict final-epoch validation
 
 - Started: 2026-07-21T20:26:49+08:00
-- Purpose: independent validation only; this directory does not overwrite any historical result.
+- Purpose: strict-holdout validation of WK-CDAN across all directed CWRU load-transfer tasks.
 - Script: `experiments/cwru_ieee_revision.py`
 - Script SHA-256 at launch: `4C60F9BB4DEC6C94230D1791AE7C4C84AD169888BDB7881E4294281B8409B29A`
 - Data protocol: `strict_holdout` (split each original continuous record 80/20 before windowing).

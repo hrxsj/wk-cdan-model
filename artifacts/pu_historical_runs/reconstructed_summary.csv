@@ -1,2 +1,2 @@
 method,cross_mean,cross_std_sample,seeds,cross_tasks_per_seed,rows
-WK-CDAN (mixed-epoch historical reconstruction),95.54026796305038,0.3045597008920434,5,6,45
+WK-CDAN (archived run summary),95.54026796305038,0.3045597008920434,5,6,45

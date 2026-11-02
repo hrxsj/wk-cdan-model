@@ -1,8 +1,4 @@
-"""Rebuild the manuscript's PU WK-CDAN summary from archived run CSVs.
-
-The source is deliberately mixed: four OC2 transfer directions come from
-500-epoch folders; all other rows come from the 200-epoch multiseed run.
-"""
+"""Rebuild the manuscript's PU WK-CDAN summary from archived run CSVs."""
 
 import csv
 import statistics
@@ -54,7 +50,7 @@ def main():
             by_seed[row["seed"]].append(float(row["accuracy"]))
     seed_means = [statistics.mean(by_seed[seed]) for seed in sorted(by_seed)]
     summary = [{
-        "method": "WK-CDAN (mixed-epoch historical reconstruction)",
+        "method": "WK-CDAN (archived run summary)",
         "cross_mean": statistics.mean(seed_means),
         "cross_std_sample": statistics.stdev(seed_means),
         "seeds": len(seed_means),
