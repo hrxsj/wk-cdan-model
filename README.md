@@ -159,6 +159,8 @@ python pipeline.py summarize --input-dir runs/cwru_main --output-dir runs/cwru_r
 
 Reports contain `summary.csv`, `task_summary.csv`, `summary.json`, `comparison.tex`, `accuracy.pdf`, and `accuracy.png`. Overall means and sample standard deviations are computed across repeated-run task averages. Runtime data and artifacts are written beneath `runs/`.
 
+Selected archived result CSVs, manuscript summary tables, and provenance notes are available in [`artifacts/`](artifacts/README.md). The artifact index records each result's source and aggregation status.
+
 ## Model interface
 
 The network combines Mexican Hat Wavelet-KAN convolution, CNN feature extraction, SE attention, a Wavelet-KAN classifier, and a conditional domain discriminator. CDAN receives the flattened outer product of features and predicted class probabilities through a gradient reversal layer.

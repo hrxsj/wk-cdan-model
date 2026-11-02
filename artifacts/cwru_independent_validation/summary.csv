@@ -1,0 +1,2 @@
+suite,method,data_protocol,snr_db,same_mean,same_std,same_min,same_max,cross_mean,cross_std,cross_min,cross_max,overall_mean,overall_std,overall_min,overall_max,params_m,runs
+main,WK-CDAN Full,strict_holdout,,0.0,0.0,0.0,0.0,99.03528047366173,0.8295401667681842,97.56176916838884,99.55757710518743,99.03528047366173,0.8295401667681842,97.56176916838884,99.55757710518743,0.373,60

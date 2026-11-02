@@ -20,6 +20,8 @@
 !/docs/*.md
 !/tests/
 !/tests/*.py
+!/artifacts/
+!/artifacts/**
 
 # Runtime data and outputs stay local.
 __pycache__/
