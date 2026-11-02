@@ -1,7 +1,6 @@
-"""Standalone WK-CDAN main model for architectural review.
+"""WK-CDAN for cross-domain bearing fault diagnosis.
 
 Input: per-window normalized vibration signals of shape (batch, 1, length).
-No datasets, pretrained parameters, or experiment results are embedded.
 """
 
 import math

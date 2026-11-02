@@ -1,4 +1,4 @@
-"""Check forward/backward execution using synthetic inputs only."""
+"""Run a WK-CDAN forward/backward example with synthetic inputs."""
 
 import torch
 import torch.nn.functional as F
@@ -11,7 +11,7 @@ def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = CDANModel(num_classes=10).to(device)
     center_loss = CenterLoss(num_classes=10, use_gpu=False).to(device)
-    # Random tensors are an execution check, not bearing data or predictions.
+    # Create synthetic source and target batches.
     source = torch.randn(4, 1, 1024, device=device)
     target = torch.randn(4, 1, 1024, device=device)
     source_labels = torch.tensor([0, 1, 2, 3], device=device)
@@ -34,7 +34,7 @@ def main():
     assert all(torch.isfinite(p.grad).all() for p in model.parameters() if p.grad is not None)
     print(f"Device: {device}")
     print("Class logits: (4, 10); domain logits: (4, 2); features: (4, 128)")
-    print("Synthetic forward/backward check passed. No experimental accuracy is measured.")
+    print("Synthetic forward/backward example completed successfully.")
 
 
 if __name__ == "__main__":

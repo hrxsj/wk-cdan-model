@@ -1,8 +1,8 @@
-# WK-CDAN main model
+# WK-CDAN
 
-Standalone implementation of the main Wavelet-KAN Conditional Domain Adversarial Network (WK-CDAN), provided for architectural review.
+PyTorch implementation of the Wavelet-KAN Conditional Domain Adversarial Network (WK-CDAN) for cross-domain bearing fault diagnosis.
 
-This release contains model source code, loss components, and a synthetic execution example. It does not contain datasets, trained weights, training/evaluation pipelines, experimental results, manuscript materials, or development history. It cannot independently reproduce the paper's numerical results.
+The implementation combines Wavelet-KAN feature extraction and classification, SE channel attention, and conditional domain adversarial learning. The repository includes the model, loss components, and a runnable forward/backward example using synthetic inputs.
 
 ## Model
 
@@ -13,18 +13,18 @@ This release contains model source code, loss components, and a synthetic execut
 
 The alignment is CDAN: the discriminator receives both features and predicted class probabilities through their outer product. The discriminator is used during training; class logits are used for fault classification.
 
-The implementation is extracted from the revised research implementation. The main-model configuration is fixed to the Mexican Hat Wavelet-KAN backbone and classifier, SE enabled, conditional domain alignment enabled, and wavelet translation/response normalization disabled. Baseline architectures and ablation runners are omitted. The default main-model parameter names and tensor shapes are retained.
+The default configuration uses the Mexican Hat wavelet in both the backbone and classifier, with SE attention and conditional domain alignment enabled. Wavelet translation and response normalization are disabled.
 
-## Run the synthetic example
+## Quick start
 
-Tested with Python 3.9 and PyTorch 2.8.0. Install the dependency in your own environment:
+Tested with Python 3.9 and PyTorch 2.8.0:
 
 ```bash
 pip install -r requirements.txt
 python example.py
 ```
 
-The example automatically uses CUDA when available and otherwise uses CPU. It generates random input tensors in memory, checks output shapes, and backpropagates the combined objective. It does not download data or write files. Passing this check verifies execution only.
+The example automatically uses CUDA when available and otherwise uses CPU. It creates synthetic source and target batches, computes the combined objective, runs backpropagation, and checks output shapes and gradients.
 
 ## Interface
 
@@ -38,9 +38,9 @@ with torch.no_grad():
     class_logits, domain_logits, features = model(torch.randn(2, 1, 1024))
 ```
 
-Inputs have shape `(batch, 1, signal_length)`; the research input window length is 1024. Real input windows are standardized individually as `(window - mean) / (std + 1e-8)` before being passed to the model. Preprocessing is outside this model release.
+Inputs have shape `(batch, 1, signal_length)`, with a research input window length of 1024. Standardize each vibration window as `(window - mean) / (std + 1e-8)` before passing it to the model.
 
-Outputs are class logits `(batch, num_classes)`, domain logits `(batch, 2)`, and features `(batch, 128)`. `alpha` controls gradient reversal; its default value of zero disables the adversarial gradient flowing back to the feature/classification path. It does not disable discriminator gradients. The research schedule uses `alpha = 2 / (1 + exp(-10 * progress)) - 1`.
+Outputs are class logits `(batch, num_classes)`, domain logits `(batch, 2)`, and features `(batch, 128)`. `alpha` scales the reversed adversarial gradient flowing back to the feature and classification layers. At the default `alpha=0`, this gradient is zero while the discriminator receives its own gradients. The research schedule uses `alpha = 2 / (1 + exp(-10 * progress)) - 1`.
 
 ## Loss components
 
@@ -55,14 +55,13 @@ L = source classification CE
 
 Domain labels are 0 for source and 1 for target. Target class labels do not enter this objective. `CenterLoss` and `target_entropy_loss` are included in `model.py`; cross-entropy uses PyTorch's implementation. For CPU use, construct `CenterLoss(..., use_gpu=False)`.
 
-The synthetic example illustrates the objective and backward pass only. The research trainer uses a separate SGD optimizer for class centers (learning rate 0.5), rescales center gradients by `1 / 0.05` before its step, and optimizes the model with Adam (learning rate 0.0005, weight decay 0.001). Data partitioning, checkpoint selection, full training, and evaluation are outside this release.
+The research training configuration uses Adam for the model (learning rate 0.0005, weight decay 0.001) and a separate SGD optimizer for class centers (learning rate 0.5). Center gradients are rescaled by `1 / 0.05` before the center optimizer step.
 
 ## Files
 
 | File | Purpose |
 | --- | --- |
-| `model.py` | Main model, gradient reversal, center loss, target entropy |
-| `example.py` | Synthetic forward/backward execution check |
-| `requirements.txt` | Tested PyTorch dependency |
-| `.gitignore` | Explicit allowlist for the release files |
+| `model.py` | WK-CDAN model, gradient reversal, center loss, and target entropy |
+| `example.py` | Forward/backward example with synthetic source and target inputs |
+| `requirements.txt` | Python dependency |
 
