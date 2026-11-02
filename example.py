@@ -4,10 +4,11 @@ import torch
 import torch.nn.functional as F
 
 from model import CDANModel, CenterLoss, target_entropy_loss
+from runtime import resolve_seed
 
 
 def main():
-    torch.manual_seed(42)
+    torch.manual_seed(resolve_seed())
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = CDANModel(num_classes=10).to(device)
     center_loss = CenterLoss(num_classes=10, use_gpu=False).to(device)

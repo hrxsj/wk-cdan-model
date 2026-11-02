@@ -15,7 +15,7 @@ NUM_CLASSES = 10
 
 def wavelet_basis(x, wavelet="mexhat"):
     if wavelet.lower() not in {"mexhat", "mexican", "mexican_hat", "mexican-hat"}:
-        raise ValueError("This main-model release supports the Mexican Hat wavelet only")
+        raise ValueError(f"Unknown Mexican Hat wavelet alias: {wavelet}")
     return (1 - x**2) * torch.exp(-0.5 * x**2)
 
 

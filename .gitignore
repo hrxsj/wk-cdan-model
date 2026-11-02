@@ -1,7 +1,34 @@
-# Only these reviewed source/documentation files may be staged.
+# Public source, configuration, and documentation.
 *
 !/.gitignore
 !/README.md
 !/requirements.txt
 !/model.py
 !/example.py
+!/runtime.py
+!/pipeline.py
+!/evaluation.py
+!/reporting.py
+!/experiments/
+!/experiments/**/
+!/experiments/**/*.py
+!/cwru/
+!/cwru/metadata.txt
+!/configs/
+!/configs/*.json
+!/docs/
+!/docs/*.md
+!/tests/
+!/tests/*.py
+
+# Runtime data and outputs stay local.
+__pycache__/
+*.py[cod]
+Data/
+runs/
+outputs/
+*.pt
+*.pth
+*.mat
+.env
+*.log
